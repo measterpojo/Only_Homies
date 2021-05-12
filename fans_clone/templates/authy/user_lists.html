@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+
+<ul class="collection with-header">
+	<li class="collection-header">
+		<h4>My lists:</h4>
+		<a href="#modal2" class="btn-floating btn-large waves-effect waves-light red modal-trigger"><i class="material-icons">add</i></a>
+	</li>
+	{% for lists in user_lists %}
+		<a href="{% url 'people-list' lists.id %}" class="collection-item">
+			<span style="font-size: 20px">{{ lists.title }}</span>
+			<br><br>
+			<span>{{ lists.people.count }} people</span>
+		</a>	
+	{% endfor %}
+</ul>
+
+{% include 'posts/new_list_modal.html' %}
+
+
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div>
+	<div>
+		<div>
+			<form method="POST" enctype="multipart/form-data" role='form' class="col s12">
+				{% csrf_token %}
+
+				<h4>New Post</h4>
+				
+				<div class="file-field input-field col s12">
+					<div class="btn">
+						<span>Meida Files</span>
+						{{ form.content }}
+					</div>
+				
+					<div class="file-path-wrapper">
+						<input placeholder="Upload files" class="file-path validate" type="text" name="">
+					</div>
+				</div>
+
+				<div class="input-field col s12">
+					<i class="material-icons prefix">description</i>
+					{{ form.title }}
+					<label for="title">Title</label>
+				</div>
+				<div class="input-field col s12">
+					<i class="material-icons prefix">brush</i>
+					{{ form.caption }}
+					<label for="caption">Caption</label>
+				</div>
+				<div class="input-field col s12">
+					<i class="material-icons prefix">star_rate</i>
+					{{ form.tier }}
+					<label for="tier">Tier Select</label>
+					<br>
+				</div>
+
+
+
+				<div class="input-field col s12">
+					<button class="btn waves-effect waves-light" type="submit" name="action">Post
+						<i class="material-icons right">post_add</i>
+					</button>
+				</div>
+			
+			</form>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

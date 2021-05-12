@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<body>
+
+
+
+    <div class="col s8 offset-s3"> 
+      {% for stream in stream_data %}
+      <div class="col s12 m12">
+        <div class="card">
+
+          {% if stream.visible == True %}
+            <div class="card-image">
+              {% if stream.post.content.first.file.name|slice:"-3" == 'jpg' or 'png' %}
+                <a href="{{ stream.post.get_absolute_url }}"></a><img style="max-height: 400px; " src="{{ stream.post.content.first.file.url }}">
+                <br>
+                 
+                <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">favorite</i></a>
+              {% else%}
+              <div class="video-container">
+                <video class="responsive-video" controls="controls" preload="metadata">
+                  <source src="{{ stream.post.content.first.file.url }}" type="video/mp4">
+                </video>    
+              </div>
+         
+              {% endif %}
+            </div>
+        {% else %}
+
+            <div class="center-align">
+
+              <i class="material-icons large grey-text">lock</i>
+              <br>
+              <h5>Not available</h5>
+              <p class="card-title grey-text text-darken-4">This content is for {{ stream.post.tier }}</p>
+              <span class="card-title grey-text text-darken-4">You need to upgrade your subscrtion</span>  
+              <br><br>
+
+              <a class="waves-effect waves-light btn" href="{% url 'profile' stream.post.user.username %}"><i class="material-icons right">upgrade</i>UpGrade</a>       
+            </div>
+
+        {% endif %}
+        <br>
+
+
+          <div class="card-content">
+
+            <p><a href="{{ stream.post.get_absolute_url }}">Click to see Full post</a></p>
+
+          </div>
+
+
+
+          <div class="card-content" >
+            <span class="card-title">{{ stream.post.title }}</span>
+            <p>{{ stream.post.caption }}</p>
+          </div>
+          <div class="card-action">
+            <div class="row">
+              <div class="col s4">
+                  {% if stream.post.user.profile.picture %}
+                      <img class="circle responsive-img" src="{{ stream.post.user.profile.picture.url }}">
+                  {% else %}
+                      <img class="circle responsive-img" src="{% static 'img/placeholder_profile.jpg' %}">
+                  {% endif %}
+                </div>   
+
+                  <div class="col s10">
+                    <h6><p>{{ stream.post.user.username }}</p></h6>
+                    <span>Published on: <b> {{ stream.post.posted }} </b></span>
+                  </div>
+              </div>
+            </div>
+
+            <div class="card-action">
+              <div class="row">
+                <div class="col s12 m4">
+                  <div class="icon-block">
+                    <a href="{% url 'postlikes' stream.post.id %}"><i class="material-icons">thumb_up</i>{{ stream.post.likes_count }}</a>
+                  </div>
+                </div>
+                <div class="col s12 m4">
+                  <div class="icon-block">  
+                    <a href="#"><i class="material-icons">favorite</i>Follow</a>
+                  </div>
+                </div>
+                <div class="col s12 m4">
+                  <div class="icon-block">  
+                    <a href="#"><i class="material-icons">comment</i>Comment</a>
+                   </div>
+                  </div> 
+                </div>
+              </div>  
+          
+        </div>
+      </div>
+      {% endfor %}
+    </div> 
+
+    <div class="col s12 m12 center-align">
+      {% if stream_data.has_previous %}
+      <a class="waves-effect waves-light btn" href="?page={{ stream_data.previous_page_number }}"><i class="material-icons right">arrow_back</i>Back</a>
+      {% endif %}
+
+      {% if stream_data.has_next %}
+      <a class="waves-effect waves-light btn" href="?page={{ stream_data.next_page_number }}"><i class="material-icons right">arrow_forward</i>Next</a>
+      {% endif %}
+    </div>
+
+
+
+
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
+            <h5 class="center">Speeds up development</h5>
+
+            <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
+            <h5 class="center">User Experience Focused</h5>
+
+            <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
+            <h5 class="center">Easy to work with</h5>
+
+            <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+          </div>
+        </div>
+      </div>
+
+    <br><br>
+
+
+
+  </body>
+</html>
+
+{% endblock content %}

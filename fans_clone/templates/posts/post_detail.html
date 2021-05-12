@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+
+{% block content %}
+
+
+
+      
+      <div class="col s12 m12">
+        <div class="card">
+
+        {% if visible == True %}
+          <div class="card-image">
+
+            <div class="slider">
+              <ul class="slides">
+                {% for con in post.content.all %}
+                <li>
+                  {% if con.file.name|slice:"-3" == 'png' or 'jpg' %}
+                  <img src="{{ con.file.url }}">
+                  {% else %}
+
+                  <div class="video-container">
+                    <video class="responsive-video" controls="controls" preload="metadata">
+                      <source src="{{ con.file.url }}" type="video/mp4">
+                    </video>
+                  </div>
+                  {% endif %}
+                </li>
+                {% endfor %}
+              </ul>              
+            </div>
+            
+            <a href="{% url 'postbookmark' post.id %}" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">favorite</i></a>
+          </div>
+
+          <ul class="collection">
+            <li class="collection-item avatar">
+          {% if post.user.profile.picture%}
+            <img src="{{ post.user.profile.picture.url }}" alt="" class="circle">
+          {% else %}
+            <img src="{% static 'img/placeholder_profile.jpg' %}" alt="" class="circle">
+          {% endif %}
+
+            <span style="font-size: 20px; font-weight: bold;" class="title">{{ post.user.username }}</span>
+            <span class="title secondary-content">{{ post.posted }}</span>
+            <p>@{{ post.user.username }}</p>
+            <a href="{% url 'profile' post.user.username %}">{{ post.user.username }}</a>
+          </li>
+
+
+          <div class="card-action">
+            <h4 class="header"><center> {{ post.title }} </center></h4>
+
+            {{ post.caption }}
+
+          </div>
+
+            <div class="card-action">
+              <div class="row">
+                <div class="col s12 m4">
+                  <div class="icon-block">
+                    <a href="{% url 'postlikes' post.id %}"><i class="material-icons">thumb_up</i>{{ post.likes_count }}</a>
+                  </div>
+                </div>
+                <div class="col s12 m4">
+                  <div class="icon-block">  
+                    <a href="#"><i class="material-icons">favorite</i>Follow</a>
+                  </div>
+                </div>
+                <div class="col s12 m4">
+                  <div class="icon-block">  
+                    <a href="#"><i class="material-icons">comment</i>Comment</a>
+                  </div>
+                </div> 
+              </div>
+            </div>  
+            
+            
+
+
+              
+        
+          {% else %}
+
+            <div class="center-align">
+              <i class="material-icons large grey-text">lock</i>
+              <br>
+              <h5>Not available</h5>
+              <p class="card-title grey-text text-darken-4">This content is for {{ stream.post.tier }}</p>
+              <span class="card-title grey-text text-darken-4">You need to upgrade your subscrtion</span>  
+              <br><br>
+              <a class="waves-effect waves-light btn"><i class="material-icons right">upgrade</i>UpGrade</a>       
+            </div>
+          {% endif %}
+
+
+        </div>
+      </div>
+
+
+
+
+    <div class="col s12 m12">
+      <div class="card">
+        <div class=""> 
+          <h5 style="padding: 15px;"><center>Comments:</center></h5>
+        </div>
+      </div>
+
+   <!--      <div class="card-action"> -->
+          <ul class="collection">
+            {% for comment in comments %}
+                <li class="collection-item avatar">
+                   {% if comment.user.profile.picture %}
+                      <img src="{{ comment.user.profile.picture.url }}" class="circle responsive-img">
+                    {% else %}
+                      <img src="{% static 'img/no_avatar.jpg' %}" class="circle responsive-img">
+                    {% endif %}
+                  <a href="{% url 'profile' comment.user.username %}" style=font-size: 20px; font-weight: bold;>{{ comment.user.username }}</a>
+                  <span class="secondary-content">{{ comment.date }}</span>
+           
+          
+                  <br>
+                  <p>
+                   {{ comment.body }}
+                  </p>
+                </li>
+               
+            {% empty %}
+                <div class="center-align">
+                  <h5>No comments</h5>
+                  <span>Be the first one to comment</span>
+                </div>
+            {% endfor %}
+          </ul>   
+
+
+          <div class="row">
+            <form method="POST" action="" role='form' class="col s12">
+              {% csrf_token %}
+              <div class="row">
+
+                  <div class="input-field col s12">
+                    <i class="material-icons prefix">edit</i>
+                    {{ form.body }}
+                    <label for="body">Comment</label>
+                  </div>
+
+                  <button class="btn btn-small waves-effect blue" type="submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                  </button>  
+                
+
+              </div>
+            </form>
+          </div>
+        
+    <!--     </div>  -->
+      </div>
+
+
+{% endblock %}

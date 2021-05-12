@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Code Bro | Only Homies</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+
+<!--   Nav bar -->
+  
+<nav class="#18ffff cyan">
+    <div class="nav-wrapper">
+      <a href="{% url 'index' %}" class="brand-logo"><i class="material-icons"></i>ONLY HOMIES</a>
+      <ul class="right hide-on-med-and-down">
+     <!--    <li><a href="{% url 'index' %}"><i class="material-icons left">home</i>Home</a></li> -->
+        <li><a href="{% url 'show-notifications' %}"><i class="material-icons left">notifications</i>Notifications
+          {% if user.is_authenticated %}
+          <span class="new badge">{{ count_notifications }}</span></a></li>
+          {% endif %}
+          
+        <li><a href="{% url 'post' %}"><i class="material-icons left">add_box</i>Post</a></li>
+        <li><a href="{% url 'newtier' %}"><i class="material-icons left">add_box</i>New Tier</a></li>
+        <li><a href="{% url 'inbox' %}"><i class="material-icons left">messages</i>Inbox</a></li>
+        <li><a href="#" data-target='slide-out' class="sidenav-trigger show-on-large"><i class="material-icons left">person</i>{{ user.username }}</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<!-- end navbar -->
+
+<!-- side bar -->
+{% if user.is_authenticated %}
+<ul id="slide-out" class="sidenav">
+    <li>
+      <div class="user-view">
+          <div class="background" style="width: 100%">
+          {% if nav_profile.banner %}
+            <img src="{{ nav_profile.banner.url }}">
+          {% else %}
+            <img src="{% static 'img/banner_placeholder.img' %}">
+          {% endif %}
+          </div>
+
+          <a href="#user">
+          {% if nav_profile.picture %}
+            <img src="{{ nav_profile.picture.url }}" class="circle responsive-img">
+          {% else %}
+            <img src="{% static 'img/placeholder_profile.jpg' %}" class="circle responsive-img">
+          {% endif %}
+          </a>
+
+     
+          <a href="#name"><span class="white-text name">{{ nav_profile.user.first_name }} {{ nav_profile.user.last_name }}</span></a>
+          <a href="#email">{{ nav_profile.user.email }}</a>
+
+       </div>
+    </li>
+
+
+    <li><a href="{% url 'myfans' %}"><i class="material-icons">stars</i>{{ fans }}  Fans</a></li>
+
+
+    <li><a href="{% url 'myfollows' %}"><i class="material-icons">people</i>{{ follows }}  Following</a></li>
+
+    <li><div class="divider"></div></li>
+    <li><a class="subheader"></a></li>
+
+    <li><a href="{% url 'profile' user.username %}"><i class="material-icons">person</i>My Profile</a></li>
+
+    <li><a href="{% url 'bookmarks' %}"><i class="material-icons">bookmarks</i>Bookmarks</a></li>
+
+    <li><a href="{% url 'show-my-list' %}"><i class="material-icons">list</i>Lists</a></li>
+
+    <li><div class="divider"></div></li>
+    <li><a class="subheader"></a></li>
+
+    <li><a href="#!"><i class="material-icons">credit_cards</i>Your cards</a></li>
+    <li><a href="#!"><i class="material-icons">account_balance</i>Your Bank</a></li>
+
+    <li><div class="divider"></div></li>
+    <li><a href="{% url 'logout' %}"><i class="material-icons">power_off</i>Log Out</a></li>
+
+  </ul>
+  {% endif %}
+ <!--  side bar ends -->
+
+
+<div class="container">
+  <div class="row">
+{% block content %}
+
+{% endblock %}
+
+
+{% block tab %}
+
+{% endblock tab %}
+
+  </div>
+</div>
+
+ <footer class="page-footer blue">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Code Bro</h5>
+          <p class="grey-text text-lighten-4">We're three cool guys looking for other cool guys who want to hang out in our party mansion. Nothing sexual.
+          Dudes in good shape encouraged. If you are fat, you should be able to find humor in the little things. Again, nothing sexual</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Code Bro</a>
+      </div>
+    </div>
+  </footer>
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src='{% static  "js/materialize.js" %}'></script>
+<script src='{% static  "js/init.js" %}'></script>
+{% block javascript %}
+{% endblock %}
+
+
+
+</body>
